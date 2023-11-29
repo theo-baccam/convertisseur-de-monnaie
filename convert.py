@@ -67,8 +67,7 @@ def prompt_processor(input_string):
     if not cc.get_currency_name(currency) or not cc.get_currency_name(convert):
         return "Devises invalide"
 
-    taux_change = cr.get_rate(currency, convert)
-    final = amount * taux_change
+    final = f"{cr.convert(currency, convert, amount)} {convert}"
     return final
 
 print("Convertisseur de monnaie :\n")
