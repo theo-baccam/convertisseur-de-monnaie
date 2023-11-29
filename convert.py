@@ -3,6 +3,42 @@ cr = CurrencyRates()
 from forex_python.converter import CurrencyCodes
 cc = CurrencyCodes()
 
+devise_list = [
+            "Baht thaïlandais: THB",
+            "Couronne danoise: DKK",
+            "Couronne islandaise: ISK",
+            "Couronne norvégienne: NOK",
+            "Couronne suédoise: SEK",
+            "Couronne thcèque: CZK",
+            "Dollar américain: USD",
+            "Dollar australien: AUD",
+            "Dollar canadien: CAD",
+            "Dollar de Hong Kong: HKD",
+            "Dollar néo-zélandais: NZD",
+            "Dolar singapourien: SGD",
+            "Euro: EUR",
+            "Forint hongrois: HUF",
+            "Franc suisse: CHF",
+            "Kuna croate: HRK",
+            "Leu roumain: RON",
+            "Lev bulgare: BGN",
+            "Livre sterling: GBP",
+            "Livre turque: TRY",
+            "Peso mexicain: MXN",
+            "Peso philippin: PHP",
+            "Rand sud-africain: ZAR",
+            "Real brésilien: BRL",
+            "Ringgit malaisien: MYR",
+            "Rouble russe: RUB",
+            "Roupie indienne: INR",
+            "Roupie indonésienne: IDR",
+            "Shekel israélien: ILS",
+            "Won de la Corée du Sud: KRW",
+            "Yen japonais: JPY",
+            "Yuan Renminbi chinois: CNY",
+            "Zloty polonais: PLN"
+]
+
 def prompt_processor(input_string):
     if input_string == "help":
         return(
@@ -16,41 +52,9 @@ def prompt_processor(input_string):
     money_list = [value for value in input_string.split(" ")]
 
     if input_string == "list":
-        return (
-            "Baht thaïlandais: THB\n"
-            "Couronne danoise: DKK\n"
-            "Couronne islandaise: ISK\n"
-            "Couronne norvégienne: NOK\n"
-            "Couronne suédoise: SEK\n"
-            "Couronne thcèque: CZK\n"
-            "Dollar américain: USD\n"
-            "Dollar australien: AUD\n"
-            "Dollar canadien: CAD\n"
-            "Dollar de Hong Kong: HKD\n"
-            "Dollar néo-zélandais: NZD\n"
-            "Dolar singapourien: SGD\n"
-            "Euro: EUR\n"
-            "Forint hongrois: HUF\n"
-            "Franc suisse: CHF\n"
-            "Kuna croate: HRK\n"
-            "Leu roumain: RON\n"
-            "Lev bulgare: BGN\n"
-            "Livre sterling: GBP\n"
-            "Livre turque: TRY\n"
-            "Peso mexicain: MXN\n"
-            "Peso philippin: PHP\n"
-            "Rand sud-africain: ZAR\n"
-            "Real brésilien: BRL\n"
-            "Ringgit malaisien: MYR\n"
-            "Rouble russe: RUB\n"
-            "Roupie indienne: INR\n"
-            "Roupie indonésienne: IDR\n"
-            "Shekel israélien: ILS\n"
-            "Won de la Corée du Sud: KRW\n"
-            "Yen japonais: JPY\n"
-            "Yuan Renminbi chinois: CNY\n"
-            "Zloty polonais: PLN"
-        )
+        for devise in devise_list:
+            print(f"{devise}")
+        return ""
 
     if len(money_list) != 3:
         return "Nombre d'éléments invalide"
@@ -67,7 +71,7 @@ def prompt_processor(input_string):
     if not cc.get_currency_name(currency) or not cc.get_currency_name(convert):
         return "Devises invalide"
 
-    final = f"{cr.convert(currency, convert, amount)} {convert}"
+    final = f"{cr.convert(currency, convert, amount)} {convert}\n"
     return final
 
 print("Convertisseur de monnaie :\n")
@@ -75,4 +79,4 @@ print("Convertisseur de monnaie :\n")
 while True:
     prompt = input("==> ")
     output = prompt_processor(prompt)
-    print(f"{output}\n")
+    print(f"{output}")
