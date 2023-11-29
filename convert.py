@@ -102,8 +102,10 @@ def converter(input_string):
     if not cc.get_currency_name(currency) or not cc.get_currency_name(convert):
         return "Devises invalide\n"
 
-    final = f"{cr.convert(currency, convert, amount)} {convert}\n"
-    return final
+    symbol = cc.get_symbol(convert)
+
+    final = cr.convert(currency, convert, amount)
+    return f"{round(final, 2)} {symbol}"
 
 
 print("Convertisseur de monnaie :\n")
