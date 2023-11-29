@@ -54,12 +54,16 @@ devise_oceanie = [
 
 
 def converter(input_string):
+    if input_string == "exit" or "help":
+        return "Quitting..."
+        
     if input_string == "help":
         return (
             "[taux] [devise départ] [devise cible]\n"
             "`list` pour avoir une liste des devises\n"
             "Certaines conversions ne pourrait pas marcher car il n'y pas de "
             "données disponibles.\n"
+            "`exit` ou `quit` pour quitter le programme."
         )
     money_list = [value for value in input_string.split(" ")]
 
@@ -113,4 +117,6 @@ print("Convertisseur de monnaie :\n")
 while True:
     prompt = input("==> ")
     output = converter(prompt)
+    if output == "Quitting...":
+        break
     print(f"{output}")
