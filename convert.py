@@ -54,7 +54,7 @@ devise_oceanie = [
 
 
 def converter(input_string):
-    if input_string == "exit" or "help":
+    if input_string == "exit" or input_string == "quit":
         return "Quitting..."
         
     if input_string == "help":
@@ -117,6 +117,6 @@ print("Convertisseur de monnaie :\n")
 while True:
     prompt = input("==> ")
     output = converter(prompt)
+    print(f"{output}")
     if output == "Quitting...":
         break
-    print(f"{output}")
