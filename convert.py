@@ -1,8 +1,7 @@
 from forex_python.converter import CurrencyRates
-
-cr = CurrencyRates()
 from forex_python.converter import CurrencyCodes
 
+cr = CurrencyRates()
 cc = CurrencyCodes()
 
 devise_list = [
