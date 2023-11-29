@@ -109,7 +109,7 @@ def converter(input_string):
     symbol = cc.get_symbol(convert)
 
     final = cr.convert(currency, convert, amount)
-    return f"{round(final, 2)} {symbol}"
+    return f"{round(final, 2)} {symbol}\n"
 
 
 print("Convertisseur de monnaie :\n")
