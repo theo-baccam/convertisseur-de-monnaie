@@ -64,9 +64,7 @@ def converter(input_string):
     money_list = [value for value in input_string.split(" ")]
 
     if input_string == "list":
-        return (
-            "options: afrique, ameriques, asie, europe, oceanie\n"
-        )
+        return "options: afrique, ameriques, asie, europe, oceanie\n"
         return ""
     if input_string == "list afrique":
         for devise in devise_afrique:
