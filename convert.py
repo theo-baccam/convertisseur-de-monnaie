@@ -53,9 +53,9 @@ devise_list = {
 history = []
 
 
-def save():
-    for item in history:
-        with open("history.txt", "a") as file:
+def save(history_list):
+    with open("history.txt", "a") as file:
+        for item in history_list:
             file.write(f"{item}\n")
 
 
@@ -116,12 +116,7 @@ def command_convert(command_input):
 
 
 def command_invalid(in_lst):
-    command_list = ""
-    for index, word in enumerate(in_lst):
-        if in_lst[index] == in_lst[-1]:
-            command_list = command_list + in_lst[index]
-        else:
-            command_list = command_list + f"{in_lst[index]} "
+    command_list = " ".join(in_lst)
     return (
         f"'{command_list}' n'est pas une commande valide.\n"
         f"Tapez `help` pour voir les commandes disponibles.\n"
@@ -136,7 +131,7 @@ while True:
     if processed_input[0] == "quit" or processed_input[0] == "exit":
         output = command_quit()
         print(output)
-        save()
+        save(history)
         break
     elif processed_input[0] == "help":
         output = command_help()
