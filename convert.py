@@ -92,7 +92,7 @@ def converter(input_string):
         return ""
 
     if len(money_list) != 3:
-        return "Nombre d'éléments invalide\n"
+        return "Entrée invalide\n"
 
     amount = money_list[0]
     currency = money_list[1]
