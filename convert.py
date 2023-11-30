@@ -4,7 +4,7 @@ from forex_python.converter import CurrencyCodes
 cr = CurrencyRates()
 cc = CurrencyCodes()
 
-devise_list = {
+currency_list = {
     "afrique": [
         "Rand sud-africain: ZAR",
     ],
@@ -85,8 +85,8 @@ def command_hist():
 def command_list(input_list):
     if len(input_list) == 1:
         return "Options: afrique, ameriques, asie, europe, oceanie\n"
-    if input_list[1] in devise_list:
-        for item in devise_list[input_list[-1]]:
+    if input_list[1] in currency_list:
+        for item in currency_list[input_list[-1]]:
             print(item)
         return ""
     else:
