@@ -102,14 +102,17 @@ def converter(input_string):
         amount = float(amount)
     except ValueError:
         return "Valeur invalide\n"
+    
+    try:
+        if not cc.get_currency_name(currency) or not cc.get_currency_name(convert):
+            return "Devises invalide\n"
 
-    if not cc.get_currency_name(currency) or not cc.get_currency_name(convert):
-        return "Devises invalide\n"
+        symbol = cc.get_symbol(convert)
 
-    symbol = cc.get_symbol(convert)
-
-    final = cr.convert(currency, convert, amount)
-    return f"{round(final, 2)} {symbol}\n"
+        final = cr.convert(currency, convert, amount)
+        return f"{round(final, 2)} {symbol}\n"
+    except Exception as e:
+        return f"Conversion impossible\n"
 
 
 print("Convertisseur de monnaie :\n")
