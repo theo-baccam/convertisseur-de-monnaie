@@ -61,9 +61,9 @@ def converter(input_string):
         return (
             "[taux] [devise départ] [devise cible]\n"
             "`list` pour avoir une liste des devises\n"
+            "`exit` ou `quit` pour quitter le programme.\n"
             "Certaines conversions ne pourrait pas marcher car il n'y pas de "
             "données disponibles.\n"
-            "`exit` ou `quit` pour quitter le programme."
         )
     money_list = [value for value in input_string.split(" ")]
 
@@ -115,7 +115,7 @@ def converter(input_string):
         return f"Conversion impossible\n"
 
 
-print("Convertisseur de monnaie :\n")
+print("Convertisseur de monnaie (tapez `help`):\n")
 
 while True:
     prompt = input("==> ")
