@@ -53,60 +53,47 @@ devise_list = {
 history = []
 
 
-def save(history):
+def save():
     for item in history:
         with open("history.txt", "a") as file:
             file.write(f"{item}\n")
 
 
-def commands(input_string):
-    command = [word for word in input_string.split(" ")]
+def command_quit():
+    return "Saving and quitting...\n"
 
-    if command[0] == "exit" or command[0] == "quit":
-        save(history)
-        return "Saving and quitting..."
 
-    elif command[0] == "help":
-        return (
-            "[taux] [devise départ] [devise cible]\n"
-            "`list` pour avoir une liste des devises\n"
-            "`exit` ou `quit` pour quitter le programme.\n"
-            "Certaines conversions ne pourrait pas marcher car il n'y pas de "
-            "données disponibles.\n"
-        )
+def command_help():
+    return (
+        "[taux] [devise départ] [devise cible]\n"
+        "`list` pour avoir une liste des devises\n"
+        "`exit` ou `quit` pour quitter le programme.\n"
+        "Certaines conversions ne pourrait pas marcher car il n'y pas de "
+        "données disponibles.\n"
+    )
 
-    elif command[0] == "hist":
-        with open("history.txt", "r") as file:
-            history_file = file.readlines()
-            for item in history_file:
-                clean_item = item.replace("\r", "").replace("\n", "")
-                print(clean_item)
+
+def command_hist():
+    with open("history.txt", "r") as file:
+        history_file = file.readlines()
+        for item in history_file:
+            clean_item = item.replace("\r", "").replace("\n", "")
+            print(clean_item)
+    return ""
+
+
+def command_list(input_list):
+    if len(input_list) == 1:
+        return "Options: afrique, ameriques, asie, europe, oceanie\n"
+    if input_list[1] in devise_list:
+        for item in devise_list[input_list[-1]]:
+            print(item)
         return ""
-
-    elif command[0] == "list":
-        if len(command) == 1:
-            return "Options: afrique, ameriques, asie, europe, oceanie\n"
-        if command[1] in devise_list:
-            for item in devise_list[command[-1]]:
-                print(item)
-            return ""
-        else:
-            return "Région non existante\n"
-
-    elif len(command) == 3 and command[0].replace(".", "", 1).isdigit():
-        amount = command[0]
-        currency = command[1]
-        convert = command[2]
-        return (amount, currency, convert)
-
     else:
-        return (
-            f"'{input_string}' est une commande invalide.\n"
-            f"Tapez `help` pour voir les commandes disponibles.\n"
-        )
+        return "Région non existante\n"
 
 
-def converter(command_input):
+def command_convert(command_input):
     amount = command_input[0]
     currency = command_input[1]
     convert = command_input[2]
@@ -128,15 +115,41 @@ def converter(command_input):
         return f"Conversion impossible\n"
 
 
+def command_invalid(in_lst):
+    command_list = ""
+    for index, word in enumerate(in_lst):
+        if in_lst[index] == in_lst[-1]:
+            command_list = command_list + in_lst[index]
+        else:
+            command_list = command_list + f"{in_lst[index]} "
+    return (
+        f"'{command_list}' n'est pas une commande valide.\n"
+        f"Tapez `help` pour voir les commandes disponibles.\n"
+    )
+
+
 print("Convertisseur de monnaie (tapez `help`):\n")
 
 while True:
     prompt = input("==> ")
-    output = commands(prompt)
-    if len(output) == 3:
-        result = converter(output)
-        print(f"{result}")
+    processed_input = [word for word in prompt.split(" ")]
+    if processed_input[0] == "quit" or processed_input[0] == "exit":
+        output = command_quit()
+        print(output)
+        save()
+        break
+    elif processed_input[0] == "help":
+        output = command_help()
+        print(output)
+    elif processed_input[0] == "hist":
+        output = command_hist()
+        print(output)
+    elif processed_input[0] == "list":
+        output = command_list(processed_input)
+        print(output)
+    elif len(processed_input) == 3 and processed_input[0].replace(".", "", 1).isdigit():
+        output = command_convert(processed_input)
+        print(output)
     else:
-        print(f"{output}")
-        if output == "Saving and quitting...":
-            break
+        output = command_invalid(processed_input)
+        print(output)
