@@ -53,10 +53,11 @@ currency_list = {
 history = []
 
 
-def save(history_list):
+def command_save(history_list):
     with open("history.txt", "a") as file:
         for item in history_list:
             file.write(f"{item}\n")
+        history.clear()
         return "Saving...\n"
 
 
@@ -135,10 +136,10 @@ while True:
     if processed_input[0] == "quit" or processed_input[0] == "exit":
         output = command_quit()
         print(output)
-        save(history)
+        command_save(history)
         break
     if processed_input[0] == "save":
-        output = save(history)
+        output = command_save(history)
         print(output)
     elif processed_input[0] == "help":
         output = command_help()
