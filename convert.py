@@ -52,6 +52,8 @@ devise_oceanie = [
     "Dollar néo-zélandais: NZD",
 ]
 
+history = []
+
 
 def converter(input_string):
     if input_string == "exit" or input_string == "quit":
@@ -70,25 +72,30 @@ def converter(input_string):
     if input_string == "list":
         return "options: afrique, ameriques, asie, europe, oceanie\n"
         return ""
-    if input_string == "list afrique":
+    elif input_string == "list afrique":
         for devise in devise_afrique:
             print(devise)
         return ""
-    if input_string == "list ameriques":
+    elif input_string == "list ameriques":
         for devise in devise_ameriques:
             print(devise)
         return ""
-    if input_string == "list asie":
+    elif input_string == "list asie":
         for devise in devise_asie:
             print(devise)
         return ""
-    if input_string == "list europe":
+    elif input_string == "list europe":
         for devise in devise_europe:
             print(devise)
         return ""
-    if input_string == "list oceanie":
+    elif input_string == "list oceanie":
         for devise in devise_oceanie:
             print(devise)
+        return ""
+    
+    if input_string == "hist":
+        for item in history:
+            print(item)
         return ""
 
     if len(money_list) != 3:
@@ -110,6 +117,7 @@ def converter(input_string):
         symbol = cc.get_symbol(convert)
 
         final = cr.convert(currency, convert, amount)
+        history.append(f"{amount} {currency} => {round(final, 2)} {convert}")
         return f"{round(final, 2)} {symbol}\n"
     except Exception as e:
         return f"Conversion impossible\n"
