@@ -57,7 +57,10 @@ history = []
 
 def converter(input_string):
     if input_string == "exit" or input_string == "quit":
-        return "Quitting..."
+        for item in history:
+            with open("history.txt", "a") as file:
+                file.write(f"{item}\n")
+        return "Saving and quitting..."
         
     if input_string == "help":
         return (
@@ -72,30 +75,33 @@ def converter(input_string):
     if input_string == "list":
         return "options: afrique, ameriques, asie, europe, oceanie\n"
         return ""
-    elif input_string == "list afrique":
+    if input_string == "list afrique":
         for devise in devise_afrique:
             print(devise)
         return ""
-    elif input_string == "list ameriques":
+    if input_string == "list ameriques":
         for devise in devise_ameriques:
             print(devise)
         return ""
-    elif input_string == "list asie":
+    if input_string == "list asie":
         for devise in devise_asie:
             print(devise)
         return ""
-    elif input_string == "list europe":
+    if input_string == "list europe":
         for devise in devise_europe:
             print(devise)
         return ""
-    elif input_string == "list oceanie":
+    if input_string == "list oceanie":
         for devise in devise_oceanie:
             print(devise)
         return ""
     
     if input_string == "hist":
-        for item in history:
-            print(item)
+        with open("history.txt", "r") as file:
+            history_file = file.readlines()
+            for item in history_file:
+                clean_item = item.replace('\r', '').replace('\n', '')
+                print(clean_item)
         return ""
 
     if len(money_list) != 3:
@@ -129,5 +135,5 @@ while True:
     prompt = input("==> ")
     output = converter(prompt)
     print(f"{output}")
-    if output == "Quitting...":
+    if output == "Saving and quitting...":
         break
