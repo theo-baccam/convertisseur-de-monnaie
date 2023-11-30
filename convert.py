@@ -57,28 +57,32 @@ def save(history_list):
     with open("history.txt", "a") as file:
         for item in history_list:
             file.write(f"{item}\n")
+        return "Saving...\n"
 
 
 def command_quit():
-    return "Saving and quitting...\n"
+    return "Quitting...\n"
 
 
 def command_help():
     return (
         "[taux] [devise départ] [devise cible]\n"
         "`list` pour avoir une liste des devises\n"
+        "`save` pour sauvegarder l'historique\n"
         "`exit` ou `quit` pour quitter le programme.\n"
         "Certaines conversions ne pourrait pas marcher car il n'y pas de "
         "données disponibles.\n"
     )
 
 
-def command_hist():
+def command_hist(history_running):
     with open("history.txt", "r") as file:
         history_file = file.readlines()
         for item in history_file:
             clean_item = item.replace("\r", "").replace("\n", "")
             print(clean_item)
+        for item in history_running:
+            print(item)
     return ""
 
 
@@ -133,11 +137,14 @@ while True:
         print(output)
         save(history)
         break
+    if processed_input[0] == "save":
+        output = save(history)
+        print(output)
     elif processed_input[0] == "help":
         output = command_help()
         print(output)
     elif processed_input[0] == "hist":
-        output = command_hist()
+        output = command_hist(history)
         print(output)
     elif processed_input[0] == "list":
         output = command_list(processed_input)
