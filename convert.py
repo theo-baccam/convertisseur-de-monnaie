@@ -53,13 +53,17 @@ devise_list = {
 history = []
 
 
+def save(history):
+    for item in history:
+        with open("history.txt", "a") as file:
+            file.write(f"{item}\n")
+
+
 def commands(input_string):
     command = [word for word in input_string.split(" ")]
 
     if command[0] == "exit" or command[0] == "quit":
-        for item in history:
-            with open("history.txt", "a") as file:
-                file.write(f"{item}\n")
+        save(history)
         return "Saving and quitting..."
 
     elif command[0] == "help":
@@ -89,11 +93,17 @@ def commands(input_string):
         else:
             return "Région non existante\n"
 
-    elif len(command) == 3:
+    elif len(command) == 3 and command[0].isdigit():
         amount = command[0]
         currency = command[1]
         convert = command[2]
         return (amount, currency, convert)
+
+    else:
+        return (
+            f"'{input_string}' est une commande invalide.\n"
+            f"Tapez `help` pour voir les commandes disponibles.\n"
+        )
 
 
 def converter(command_input):
