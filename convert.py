@@ -84,7 +84,7 @@ def command_hist():
 
 def command_list(input_list):
     if len(input_list) == 1:
-        return "Options: afrique, ameriques, asie, europe, oceanie\n"
+        return "`list [option]`: afrique, ameriques, asie, europe, oceanie\n"
     if input_list[1] in currency_list:
         for item in currency_list[input_list[-1]]:
             print(item)
