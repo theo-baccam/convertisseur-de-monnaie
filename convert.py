@@ -4,65 +4,65 @@ from forex_python.converter import CurrencyCodes
 cr = CurrencyRates()
 cc = CurrencyCodes()
 
-devise_afrique = [
-    "Rand sud-africain: ZAR",
-]
-
-devise_ameriques = [
-    "Dollar américain: USD",
-    "Dollar canadien: CAD",
-    "Peso mexicain: MXN",
-    "Real brésilien: BRL",
-]
-
-devise_asie = [
-    "Baht thaïlandais: THB",
-    "Dollar de Hong Kong: HKD",
-    "Dolar singapourien: SGD",
-    "Livre turque: TRY",
-    "Peso philippin: PHP",
-    "Ringgit malaisien: MYR",
-    "Roupie indienne: INR",
-    "Roupie indonésienne: IDR",
-    "Shekel israélien: ILS",
-    "Won de la Corée du Sud: KRW",
-    "Yen japonais: JPY",
-    "Yuan Renminbi chinois: CNY",
-]
-
-devise_europe = [
-    "Couronne danoise: DKK",
-    "Couronne islandaise: ISK",
-    "Couronne norvégienne: NOK",
-    "Couronne suédoise: SEK",
-    "Couronne thcèque: CZK",
-    "Euro: EUR",
-    "Forint hongrois: HUF",
-    "Franc suisse: CHF",
-    "Kuna croate: HRK",
-    "Leu roumain: RON",
-    "Lev bulgare: BGN",
-    "Livre sterling: GBP",
-    "Rouble russe: RUB",
-    "Zloty polonais: PLN",
-]
-
-devise_oceanie = [
-    "Dollar australien: AUD",
-    "Dollar néo-zélandais: NZD",
-]
+devise_list = {
+    "afrique": [
+        "Rand sud-africain: ZAR",
+    ],
+    "ameriques": [
+        "Dollar américain: USD",
+        "Dollar canadien: CAD",
+        "Peso mexicain: MXN",
+        "Real brésilien: BRL",
+    ],
+    "asie": [
+        "Baht thaïlandais: THB",
+        "Dollar de Hong Kong: HKD",
+        "Dolar singapourien: SGD",
+        "Livre turque: TRY",
+        "Peso philippin: PHP",
+        "Ringgit malaisien: MYR",
+        "Roupie indienne: INR",
+        "Roupie indonésienne: IDR",
+        "Shekel israélien: ILS",
+        "Won de la Corée du Sud: KRW",
+        "Yen japonais: JPY",
+        "Yuan Renminbi chinois: CNY",
+    ],
+    "europe": [
+        "Couronne danoise: DKK",
+        "Couronne islandaise: ISK",
+        "Couronne norvégienne: NOK",
+        "Couronne suédoise: SEK",
+        "Couronne thcèque: CZK",
+        "Euro: EUR",
+        "Forint hongrois: HUF",
+        "Franc suisse: CHF",
+        "Kuna croate: HRK",
+        "Leu roumain: RON",
+        "Lev bulgare: BGN",
+        "Livre sterling: GBP",
+        "Rouble russe: RUB",
+        "Zloty polonais: PLN",
+    ],
+    "oceanie": [
+        "Dollar australien: AUD",
+        "Dollar néo-zélandais: NZD",
+    ],
+}
 
 history = []
 
 
-def converter(input_string):
-    if input_string == "exit" or input_string == "quit":
+def commands(input_string):
+    command = [word for word in input_string.split(" ")]
+
+    if command[0] == "exit" or command[0] == "quit":
         for item in history:
             with open("history.txt", "a") as file:
                 file.write(f"{item}\n")
         return "Saving and quitting..."
-        
-    if input_string == "help":
+
+    elif command[0] == "help":
         return (
             "[taux] [devise départ] [devise cible]\n"
             "`list` pour avoir une liste des devises\n"
@@ -70,52 +70,41 @@ def converter(input_string):
             "Certaines conversions ne pourrait pas marcher car il n'y pas de "
             "données disponibles.\n"
         )
-    money_list = [value for value in input_string.split(" ")]
 
-    if input_string == "list":
-        return "options: afrique, ameriques, asie, europe, oceanie\n"
-        return ""
-    if input_string == "list afrique":
-        for devise in devise_afrique:
-            print(devise)
-        return ""
-    if input_string == "list ameriques":
-        for devise in devise_ameriques:
-            print(devise)
-        return ""
-    if input_string == "list asie":
-        for devise in devise_asie:
-            print(devise)
-        return ""
-    if input_string == "list europe":
-        for devise in devise_europe:
-            print(devise)
-        return ""
-    if input_string == "list oceanie":
-        for devise in devise_oceanie:
-            print(devise)
-        return ""
-    
-    if input_string == "hist":
+    elif command[0] == "hist":
         with open("history.txt", "r") as file:
             history_file = file.readlines()
             for item in history_file:
-                clean_item = item.replace('\r', '').replace('\n', '')
+                clean_item = item.replace("\r", "").replace("\n", "")
                 print(clean_item)
         return ""
 
-    if len(money_list) != 3:
-        return "Entrée invalide\n"
+    elif command[0] == "list":
+        if len(command) == 1:
+            return "Options: afrique, ameriques, asie, europe, oceanie\n"
+        if command[1] in devise_list:
+            for item in devise_list[command[-1]]:
+                print(item)
+            return ""
+        else:
+            return "Région non existante\n"
 
-    amount = money_list[0]
-    currency = money_list[1]
-    convert = money_list[2]
+    elif len(command) == 3:
+        amount = command[0]
+        currency = command[1]
+        convert = command[2]
+        return (amount, currency, convert)
+
+
+def converter(command_input):
+    amount = command_input[0]
+    currency = command_input[1]
+    convert = command_input[2]
 
     try:
         amount = float(amount)
     except ValueError:
         return "Valeur invalide\n"
-    
     try:
         if not cc.get_currency_name(currency) or not cc.get_currency_name(convert):
             return "Devises invalide\n"
@@ -133,7 +122,11 @@ print("Convertisseur de monnaie (tapez `help`):\n")
 
 while True:
     prompt = input("==> ")
-    output = converter(prompt)
-    print(f"{output}")
-    if output == "Saving and quitting...":
-        break
+    output = commands(prompt)
+    if len(output) == 3:
+        result = converter(output)
+        print(f"{result}")
+    else:
+        print(f"{output}")
+        if output == "Saving and quitting...":
+            break
