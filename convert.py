@@ -93,7 +93,7 @@ def commands(input_string):
         else:
             return "Région non existante\n"
 
-    elif len(command) == 3 and command[0].isdigit():
+    elif len(command) == 3 and command[0].replace(".", "", 1).isdigit():
         amount = command[0]
         currency = command[1]
         convert = command[2]
