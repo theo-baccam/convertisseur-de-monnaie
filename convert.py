@@ -61,21 +61,6 @@ def command_save(history_list):
         return "Saving...\n"
 
 
-def command_quit():
-    return "Quitting...\n"
-
-
-def command_help():
-    return (
-        "[taux] [devise départ] [devise cible]\n"
-        "`list` pour avoir une liste des devises\n"
-        "`save` pour sauvegarder l'historique\n"
-        "`exit` ou `quit` pour quitter le programme.\n"
-        "Certaines conversions ne pourrait pas marcher car il n'y pas de "
-        "données disponibles.\n"
-    )
-
-
 def command_hist(history_running):
     with open("history.txt", "r") as file:
         history_file = file.readlines()
@@ -120,39 +105,58 @@ def command_convert(command_input):
         return f"Conversion impossible\n"
 
 
-def command_invalid(in_lst):
-    command_list = " ".join(in_lst)
-    return (
-        f"'{command_list}' n'est pas une commande valide.\n"
-        f"Tapez `help` pour voir les commandes disponibles.\n"
-    )
-
-
 print("Convertisseur de monnaie (tapez `help`):\n")
 
 while True:
-    prompt = input("==> ")
-    processed_input = [word for word in prompt.split(" ")]
-    if processed_input[0] == "quit" or processed_input[0] == "exit":
-        output = command_quit()
-        print(output)
+    try:
+        prompt = input("==> ")
+        processed_input = [word for word in prompt.split(" ")]
+
+        if processed_input[0] == "quit" or processed_input[0] == "exit":
+            print("Quitting...")
+            command_save(history)
+            break
+
+        elif processed_input[0] == "help":
+            print(
+                "[taux] [devise départ] [devise cible]\n"
+                "`list` pour avoir une liste des devises\n"
+                "`save` pour sauvegarder l'historique\n"
+                "`exit` ou `quit` pour quitter le programme.\n"
+                "Certaines conversions ne pourrait pas marcher car il n'y pas de "
+                "données disponibles.\n"
+            )
+
+        elif processed_input[0] == "hist":
+            output = command_hist(history)
+            print(output)
+
+        elif processed_input[0] == "save":
+            output = command_save(history)
+            print(output)
+
+        elif processed_input[0] == "list":
+            output = command_list(processed_input)
+            print(output)
+
+        elif (
+            len(processed_input) == 3
+            and processed_input[0].replace(".", "", 1).isdigit()
+        ):
+            output = command_convert(processed_input)
+            print(output)
+
+        else:
+            command_list = " ".join(in_lst)
+            print(
+                f"'{command_list}' n'est pas une commande valide.\n"
+                f"Tapez `help` pour voir les commandes disponibles.\n"
+            )
+
+    except KeyboardInterrupt:
+        print("\nQuitting...")
         command_save(history)
         break
-    if processed_input[0] == "save":
-        output = command_save(history)
-        print(output)
-    elif processed_input[0] == "help":
-        output = command_help()
-        print(output)
-    elif processed_input[0] == "hist":
-        output = command_hist(history)
-        print(output)
-    elif processed_input[0] == "list":
-        output = command_list(processed_input)
-        print(output)
-    elif len(processed_input) == 3 and processed_input[0].replace(".", "", 1).isdigit():
-        output = command_convert(processed_input)
-        print(output)
-    else:
-        output = command_invalid(processed_input)
-        print(output)
+
+    except Exception as e:
+        print(f"Erreur: {e}")
